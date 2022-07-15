@@ -32,6 +32,8 @@ declare interface ILine{
 	p2:IVec2
 }
 
+const __BLACK:IColor = { r:0,g:0,b:0,a: 255 }
+
 const jwf = (canvas:HTMLCanvasElement) => {
 	return {
 		_canvas : canvas,
@@ -39,15 +41,14 @@ const jwf = (canvas:HTMLCanvasElement) => {
 		drawPixel: function (pixel: IVec2): void {
 			this.gfx?.beginPath()
 			this.gfx?.fillRect(pixel.x,pixel.y,1,1)
-
 		},
-		drawLine: function (line:ILine,thick:number = 5):void{
+		drawLine: function (line:ILine,thick:number = 5,color = __BLACK):void{
 			this.gfx?.beginPath()
 			this.gfx!.lineWidth = thick
 			this.gfx?.moveTo(line.p1.x,line.p1.y)
 			this.gfx?.lineTo(line.p2.x,line.p2.y)
-			this._stroke(thick)
-			// this.gfx?.stroke()
+			this._stroke(thick,color)
+
 		},
 		drawLineBezier(startPos:IVec2,cp1:IVec2,cp2:IVec2,endPos:IVec2,thick:number=5,color?:IColor):void{
 			this.gfx?.beginPath()
@@ -66,30 +67,29 @@ const jwf = (canvas:HTMLCanvasElement) => {
 		 * @param rect 
 		 * @param color Optional
 		 */
-		drawRect: function (rect: IRect,color?:IColor): void {
+		drawRect: function (rect: IRect,color = __BLACK): void {
 			this.gfx?.beginPath()
 			this._fill(color)
 			this.gfx?.fillRect(rect.x,rect.y,rect.w,rect.h)
 		},
-		drawRectangleLines: function (rect: IRect,color?:IColor): void {
+		drawRectangleLines: function (rect: IRect,color = __BLACK): void {
 			this.gfx?.beginPath()
 
-			this.gfx?.rect(rect.x,rect.y,rect.w,rect.y)
+			this.gfx?.rect(rect.x,rect.y,rect.w,rect.h)
 			this._stroke(5,color)
 			// this.gfx?.stroke()
 		},
 		//#endregion
 		//#region Circle
-		drawCircle: function (circle: ICircle,color?:IColor): void {
+		drawCircle: function (circle: ICircle,color = __BLACK): void {
 			this.gfx?.beginPath();
 			this.gfx?.arc(circle.x,circle.y,circle.r,0,Math.PI * 2)
 			this._fill(color)
 		},
-		drawCircleLines: function (circle: ICircle,color?:IColor): void {
+		drawCircleLines: function (circle: ICircle,color = __BLACK): void {
 			this.gfx?.beginPath();
 			this.gfx?.arc(circle.x,circle.y,circle.r,0,Math.PI * 2)
 			this._stroke(5,color)
-			//this.gfx?.stroke()
 		},
 		/**
 		 * Draws an arc. 
@@ -98,7 +98,7 @@ const jwf = (canvas:HTMLCanvasElement) => {
 		 * @param endAngle end angle in RADIANS
 		 * @param color 
 		 */
-		drawCircleSector: function (circle: ICircle, startAngle:number, endAngle:number,color?:IColor): void {
+		drawCircleSector: function (circle: ICircle, startAngle:number, endAngle:number,color = __BLACK): void {
 			this.gfx?.beginPath();
 			this.gfx?.arc(circle.x,circle.y,circle.r,startAngle,endAngle)
 			this._fill(color)
@@ -107,7 +107,7 @@ const jwf = (canvas:HTMLCanvasElement) => {
 		drawImage: function (pos:IVec2,img:HTMLImageElement): void {
 			this.gfx?.drawImage(img,pos.x,pos.y)
 		},
-		drawTriangle: function (triangle:ITriangle,color?:IColor):void{
+		drawTriangle: function (triangle:ITriangle,color = __BLACK):void{
 			this.gfx?.beginPath()
 
 			this.gfx?.moveTo(triangle.p1.x,triangle.p1.y)
@@ -129,12 +129,9 @@ const jwf = (canvas:HTMLCanvasElement) => {
 		_colorToString(color:IColor) {
 			return `rgba(${color.r},${color.g},${color.b},${color.a ?? 255})`
 		},
-		_fill(color?:IColor) {
-			if(this.gfx && color)
-			{
-				this.gfx.fillStyle = this._colorToString(color)
-				this.gfx.fill()
-			}
+		_fill(color:IColor) {
+			this.gfx!.fillStyle =  this._colorToString(color)
+			this.gfx!.fill()
 		},
 		_stroke(stroke:number = 5, color?:IColor){
 			if(color){
