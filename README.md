@@ -13,7 +13,7 @@ gfx.drawCircle(circle)//draws a circle
 
 ## How to use
 
-Just insert `dist/jfw.js` on your html file after a canvas, .  
+Just insert `dist/jwf.js` on your html file after a canvas, .  
 You can also add `jwf.d.ts` to your project folder to help you with types.  
 ```html
 <canvas id="ctx"></canvas>
