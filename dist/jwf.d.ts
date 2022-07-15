@@ -24,11 +24,16 @@ declare interface ITriangle {
 declare interface ICircle extends IVec2 {
     r: number;
 }
+declare interface ILine {
+    p1: IVec2;
+    p2: IVec2;
+}
 declare const jwf: (canvas: HTMLCanvasElement) => {
+    _canvas: HTMLCanvasElement;
     gfx: CanvasRenderingContext2D | null;
     drawPixel: (pixel: IVec2) => void;
-    drawLine: (p1: IVec2, p2: IVec2, thick?: number) => void;
-    drawLineBezier(startPos: IVec2, endPos: IVec2, thick: number, divisions?: number, color?: IColor | undefined): void;
+    drawLine: (line: ILine, thick?: number) => void;
+    drawLineBezier(startPos: IVec2, cp1: IVec2, cp2: IVec2, endPos: IVec2, thick?: number, color?: IColor | undefined): void;
     /**
      *
      * @param rect
@@ -49,7 +54,7 @@ declare const jwf: (canvas: HTMLCanvasElement) => {
     drawImage: (pos: IVec2, img: HTMLImageElement) => void;
     drawTriangle: (triangle: ITriangle, color?: IColor | undefined) => void;
     clearBackground: () => void;
-    checkCollisionRecs: (rect1: IRect, rect2: IRect) => void;
     _colorToString(color: IColor): string;
     _fill(color?: IColor | undefined): void;
+    _stroke(stroke?: number, color?: IColor | undefined): void;
 };

@@ -20,34 +20,45 @@ declare interface IRect extends IVec2{
 }
 
 declare interface ITriangle {
-	p1:IVec2
-	p2:IVec2
-	p3:IVec2
+	p1:IVec2;	p2:IVec2;	p3:IVec2;
 }
 
 declare interface ICircle extends IVec2{
 	r:number
 }
 
+declare interface ILine{
+	p1:IVec2
+	p2:IVec2
+}
+
 const jwf = (canvas:HTMLCanvasElement) => {
-	console.log("Welcome to jwf")
 	return {
+		_canvas : canvas,
 		gfx:canvas.getContext('2d'),
 		drawPixel: function (pixel: IVec2): void {
 			this.gfx?.beginPath()
-
 			this.gfx?.fillRect(pixel.x,pixel.y,1,1)
 
 		},
-		drawLine: function (p1:IVec2,p2:IVec2,thick:number = 5):void{
+		drawLine: function (line:ILine,thick:number = 5):void{
 			this.gfx?.beginPath()
 			this.gfx!.lineWidth = thick
-			this.gfx?.moveTo(p1.x,p1.y)
-			this.gfx?.lineTo(p2.x,p2.y)
-			this.gfx?.stroke()
+			this.gfx?.moveTo(line.p1.x,line.p1.y)
+			this.gfx?.lineTo(line.p2.x,line.p2.y)
+			this._stroke(thick)
+			// this.gfx?.stroke()
 		},
-		drawLineBezier(startPos:IVec2,endPos:IVec2,thick:number,divisions:number=24,color?:IColor):void{
-			throw Error("Not implemented")
+		drawLineBezier(startPos:IVec2,cp1:IVec2,cp2:IVec2,endPos:IVec2,thick:number=5,color?:IColor):void{
+			this.gfx?.beginPath()
+			this.gfx?.moveTo(startPos.x,startPos.y)
+			this.gfx?.bezierCurveTo(
+				cp1.x,cp1.y,
+				cp2.x,cp2.y,
+				endPos.x,endPos.y
+			)
+			this._stroke(thick,color)
+			
 		},
 		//#region Rectangle
 		/**
@@ -64,7 +75,8 @@ const jwf = (canvas:HTMLCanvasElement) => {
 			this.gfx?.beginPath()
 
 			this.gfx?.rect(rect.x,rect.y,rect.w,rect.y)
-			this.gfx?.stroke()
+			this._stroke(5,color)
+			// this.gfx?.stroke()
 		},
 		//#endregion
 		//#region Circle
@@ -76,7 +88,8 @@ const jwf = (canvas:HTMLCanvasElement) => {
 		drawCircleLines: function (circle: ICircle,color?:IColor): void {
 			this.gfx?.beginPath();
 			this.gfx?.arc(circle.x,circle.y,circle.r,0,Math.PI * 2)
-			this.gfx?.stroke()
+			this._stroke(5,color)
+			//this.gfx?.stroke()
 		},
 		/**
 		 * Draws an arc. 
@@ -110,10 +123,6 @@ const jwf = (canvas:HTMLCanvasElement) => {
 		clearBackground: function (): void {
 			this.gfx?.clearRect(0,0,canvas.width,canvas.height)
 		},
-		checkCollisionRecs : function(rect1:IRect,rect2:IRect):void {
-			throw Error("Not implemented")
-		},
-
 		//#region Private functions
 		//those functions below are supossed to only be used by the framework
 		
@@ -127,7 +136,13 @@ const jwf = (canvas:HTMLCanvasElement) => {
 				this.gfx.fill()
 			}
 		},
-
+		_stroke(stroke:number = 5, color?:IColor){
+			if(color){
+				this.gfx!.strokeStyle = this._colorToString(color)
+			}
+			this.gfx!.lineWidth = stroke
+			this.gfx?.stroke()
+		},
 		//#endregion
 	}
 }

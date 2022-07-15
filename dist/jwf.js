@@ -1,21 +1,25 @@
 "use strict";
 const jwf = (canvas) => {
-    console.log("Welcome to jwf");
     return {
+        _canvas: canvas,
         gfx: canvas.getContext('2d'),
         drawPixel: function (pixel) {
             this.gfx?.beginPath();
             this.gfx?.fillRect(pixel.x, pixel.y, 1, 1);
         },
-        drawLine: function (p1, p2, thick = 5) {
+        drawLine: function (line, thick = 5) {
             this.gfx?.beginPath();
             this.gfx.lineWidth = thick;
-            this.gfx?.moveTo(p1.x, p1.y);
-            this.gfx?.lineTo(p2.x, p2.y);
-            this.gfx?.stroke();
+            this.gfx?.moveTo(line.p1.x, line.p1.y);
+            this.gfx?.lineTo(line.p2.x, line.p2.y);
+            this._stroke(thick);
+            // this.gfx?.stroke()
         },
-        drawLineBezier(startPos, endPos, thick, divisions = 24, color) {
-            throw Error("Not implemented");
+        drawLineBezier(startPos, cp1, cp2, endPos, thick = 5, color) {
+            this.gfx?.beginPath();
+            this.gfx?.moveTo(startPos.x, startPos.y);
+            this.gfx?.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, endPos.x, endPos.y);
+            this._stroke(thick, color);
         },
         //#region Rectangle
         /**
@@ -31,7 +35,8 @@ const jwf = (canvas) => {
         drawRectangleLines: function (rect, color) {
             this.gfx?.beginPath();
             this.gfx?.rect(rect.x, rect.y, rect.w, rect.y);
-            this.gfx?.stroke();
+            this._stroke(5, color);
+            // this.gfx?.stroke()
         },
         //#endregion
         //#region Circle
@@ -43,7 +48,8 @@ const jwf = (canvas) => {
         drawCircleLines: function (circle, color) {
             this.gfx?.beginPath();
             this.gfx?.arc(circle.x, circle.y, circle.r, 0, Math.PI * 2);
-            this.gfx?.stroke();
+            this._stroke(5, color);
+            //this.gfx?.stroke()
         },
         /**
          * Draws an arc.
@@ -73,9 +79,6 @@ const jwf = (canvas) => {
         clearBackground: function () {
             this.gfx?.clearRect(0, 0, canvas.width, canvas.height);
         },
-        checkCollisionRecs: function (rect1, rect2) {
-            throw Error("Not implemented");
-        },
         //#region Private functions
         //those functions below are supossed to only be used by the framework
         _colorToString(color) {
@@ -86,6 +89,13 @@ const jwf = (canvas) => {
                 this.gfx.fillStyle = this._colorToString(color);
                 this.gfx.fill();
             }
+        },
+        _stroke(stroke = 5, color) {
+            if (color) {
+                this.gfx.strokeStyle = this._colorToString(color);
+            }
+            this.gfx.lineWidth = stroke;
+            this.gfx?.stroke();
         },
         //#endregion
     };
