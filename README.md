@@ -30,6 +30,10 @@ You can also add `jwf.d.ts` to your project folder to help you with types.
 </script>
 ```
 
+## Template
+
+You can use this template to start using. https://github.com/ussaohelcim/jwf-template.js
+
 ## Modules
 
 The jfw contains the following libraries:  
@@ -66,8 +70,8 @@ The jfw contains the following libraries:
 	```
 ## Roadmap
 
-- [ ] math library  
-- [ ] collision library  
+- [X] math library  
+- [X] collision library  
 - [ ] add more stuff here  
 
 ## Examples
