@@ -7,8 +7,8 @@ const jwCL = {
             (rect1.y < (rect2.y + rect2.h) && (rect1.y + rect1.h) > rect2.y);
     },
     checkCollisionCircles(circle1, circle2) {
-        let dx = circle1.x - circle2.x;
-        let dy = circle1.y - circle2.y;
+        let dx = circle2.x - circle1.x;
+        let dy = circle2.y - circle1.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
         return distance <= (circle1.r + circle2.r);
     },
