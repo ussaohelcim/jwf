@@ -178,20 +178,8 @@ const jwML = {
 	rect(x:number,y:number,w:number,h:number):IRect {
 		return {x:x,y:y,w:w,h:h}
 	},
-	cloneRect(rect: IRect) {
-		return {
-		 	x: rect.x, y: rect.y, h: rect.h, w: rect.w
-		}
-	},
-	cloneCircle(circle: ICircle) {
-		return {
-			x: circle.x, y: circle.y, r:circle.r
-		}
-	},
-	cloneVec2(vec: IVec2) {
-		return {
-			x: vec.x, y: vec.y
-		}
+	cloneObject<Type>(obj:Type) {
+		return {...obj}
 	}
 
 }
