@@ -159,12 +159,6 @@ const jwML = {
 	normalizedVector2ToAngle(v:IVec2){
 		return Math.atan2(v.y,v.x);
 	},
-	vec2(x:number,y:number):IVec2{
-		return {
-			x:x,
-			y:y
-		}
-	},
 	/**
 	 * Useful to get the normal direction of a plane.  
 	 */
@@ -175,6 +169,31 @@ const jwML = {
 			z: v1.x*v2.y - v1.y*v2.x
 		}
 	},
+	vec2(x:number,y:number):IVec2{
+		return {
+			x:x,
+			y:y
+		}
+	},
+	rect(x:number,y:number,w:number,h:number):IRect {
+		return {x:x,y:y,w:w,h:h}
+	},
+	cloneRect(rect: IRect) {
+		return {
+		 	x: rect.x, y: rect.y, h: rect.h, w: rect.w
+		}
+	},
+	cloneCircle(circle: ICircle) {
+		return {
+			x: circle.x, y: circle.y, r:circle.r
+		}
+	},
+	cloneVec2(vec: IVec2) {
+		return {
+			x: vec.x, y: vec.y
+		}
+	}
+
 }
 
 declare interface IVec3 extends IVec2{

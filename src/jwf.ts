@@ -37,7 +37,7 @@ const __BLACK:IColor = { r:0,g:0,b:0,a: 255 }
 const jwf = (canvas:HTMLCanvasElement) => {
 	return {
 		_canvas : canvas,
-		gfx:canvas.getContext('2d'),
+		gfx: canvas.getContext('2d'),
 		drawPixel: function (pixel: IVec2): void {
 			this.gfx?.beginPath()
 			this.gfx?.fillRect(pixel.x,pixel.y,1,1)
@@ -120,12 +120,42 @@ const jwf = (canvas:HTMLCanvasElement) => {
 			this.gfx?.closePath()
 
 		},
-		clearBackground: function (): void {
-			this.gfx?.clearRect(0,0,canvas.width,canvas.height)
+		clearBackground: function (x?:number,y?:number): void {
+			this.gfx?.clearRect(x??0,y??0,canvas.width,canvas.height)
 		},
+
+		drawText: function (position:IVec2,text:string,color = __BLACK): void{
+			this.gfx?.fillText(text, position.x, position.y)
+			this._fill(color)
+		},
+		/**
+		 * Set the font. Need to call this every time you change canvas resolution.  
+		 * @param size 
+		 * @param font 
+		 * @param baseLine 
+		 */
+		setFont: function (size:number, font:string, baseLine?:CanvasTextBaseline): void{
+			this.gfx!.font = `${size}px ${font}` 
+			this.gfx!.textBaseline = baseLine ?? 'top'
+		},
+		/**
+		 * 
+		 * @param a (m11) Horizontal scaling. A value of 1 results in no scaling.
+		 * @param b (m12) Vertical skewing.
+		 * @param c (m21) Horizontal skewing.
+		 * @param d (m22) Vertical scaling. A value of 1 results in no scaling.
+		 * @param e (dx) Horizontal translation (moving).
+		 * @param f (dy) Vertical translation (moving).
+		 */
+		setTransform(a:number,b:number,c:number,d:number,e:number,f:number) {
+			this.gfx!.transform(a,b,c,d,e,f)
+		},
+		getColor(r: number, g: number, b: number, a: number):IColor {
+			return {r:r,g:g,b:b,a:a}
+		},
+
 		//#region Private functions
 		//those functions below are supossed to only be used by the framework
-		
 		_colorToString(color:IColor) {
 			return `rgba(${color.r},${color.g},${color.b},${color.a ?? 255})`
 		},
