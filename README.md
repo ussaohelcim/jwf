@@ -74,9 +74,6 @@ The jfw contains the following libraries:
 - [X] collision library  
 - [ ] add more stuff here  
 
-## Examples
-
-You can see examples at [examples](/examples/).
 
 # Contribution
 
