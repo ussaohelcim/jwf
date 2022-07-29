@@ -54,7 +54,26 @@ declare const jwf: (canvas: HTMLCanvasElement) => {
     drawCircleSector: (circle: ICircle, startAngle: number, endAngle: number, color?: IColor) => void;
     drawImage: (pos: IVec2, img: HTMLImageElement) => void;
     drawTriangle: (triangle: ITriangle, color?: IColor) => void;
-    clearBackground: () => void;
+    clearBackground: (x?: number | undefined, y?: number | undefined) => void;
+    drawText: (position: IVec2, text: string, color?: IColor) => void;
+    /**
+     * Set the font. Need to call this every time you change canvas resolution.
+     * @param size
+     * @param font
+     * @param baseLine
+     */
+    setFont: (size: number, font: string, baseLine?: CanvasTextBaseline | undefined) => void;
+    /**
+     *
+     * @param a (m11) Horizontal scaling. A value of 1 results in no scaling.
+     * @param b (m12) Vertical skewing.
+     * @param c (m21) Horizontal skewing.
+     * @param d (m22) Vertical scaling. A value of 1 results in no scaling.
+     * @param e (dx) Horizontal translation (moving).
+     * @param f (dy) Vertical translation (moving).
+     */
+    setTransform(a: number, b: number, c: number, d: number, e: number, f: number): void;
+    getColor(r: number, g: number, b: number, a: number): IColor;
     _colorToString(color: IColor): string;
     _fill(color: IColor): void;
     _stroke(stroke?: number, color?: IColor | undefined): void;

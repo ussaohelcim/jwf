@@ -92,7 +92,6 @@ declare const jwML: {
     vector2Clamp(v: IVec2, min: IVec2, max: IVec2): IVec2;
     AngleToNormalizedVector2(angle: number): IVec2;
     normalizedVector2ToAngle(v: IVec2): number;
-    vec2(x: number, y: number): IVec2;
     /**
      * Useful to get the normal direction of a plane.
      */
@@ -101,6 +100,9 @@ declare const jwML: {
         y: number;
         z: number;
     };
+    vec2(x: number, y: number): IVec2;
+    rect(x: number, y: number, w: number, h: number): IRect;
+    cloneObject<Type>(obj: Type): Type;
 };
 declare interface IVec3 extends IVec2 {
     z: number;

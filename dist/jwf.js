@@ -75,8 +75,37 @@ const jwf = (canvas) => {
             this._fill(color);
             this.gfx?.closePath();
         },
-        clearBackground: function () {
-            this.gfx?.clearRect(0, 0, canvas.width, canvas.height);
+        clearBackground: function (x, y) {
+            this.gfx?.clearRect(x ?? 0, y ?? 0, canvas.width, canvas.height);
+        },
+        drawText: function (position, text, color = __BLACK) {
+            this.gfx?.fillText(text, position.x, position.y);
+            this._fill(color);
+        },
+        /**
+         * Set the font. Need to call this every time you change canvas resolution.
+         * @param size
+         * @param font
+         * @param baseLine
+         */
+        setFont: function (size, font, baseLine) {
+            this.gfx.font = `${size}px ${font}`;
+            this.gfx.textBaseline = baseLine ?? 'top';
+        },
+        /**
+         *
+         * @param a (m11) Horizontal scaling. A value of 1 results in no scaling.
+         * @param b (m12) Vertical skewing.
+         * @param c (m21) Horizontal skewing.
+         * @param d (m22) Vertical scaling. A value of 1 results in no scaling.
+         * @param e (dx) Horizontal translation (moving).
+         * @param f (dy) Vertical translation (moving).
+         */
+        setTransform(a, b, c, d, e, f) {
+            this.gfx.transform(a, b, c, d, e, f);
+        },
+        getColor(r, g, b, a) {
+            return { r: r, g: g, b: b, a: a };
         },
         //#region Private functions
         //those functions below are supossed to only be used by the framework

@@ -156,12 +156,6 @@ const jwML = {
     normalizedVector2ToAngle(v) {
         return Math.atan2(v.y, v.x);
     },
-    vec2(x, y) {
-        return {
-            x: x,
-            y: y
-        };
-    },
     /**
      * Useful to get the normal direction of a plane.
      */
@@ -172,4 +166,16 @@ const jwML = {
             z: v1.x * v2.y - v1.y * v2.x
         };
     },
+    vec2(x, y) {
+        return {
+            x: x,
+            y: y
+        };
+    },
+    rect(x, y, w, h) {
+        return { x: x, y: y, w: w, h: h };
+    },
+    cloneObject(obj) {
+        return { ...obj };
+    }
 };
